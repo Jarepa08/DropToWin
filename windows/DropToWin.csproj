@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- La versión de Windows en el TFM habilita las APIs WinRT de Bluetooth (RFCOMM). -->
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>DropToWin</AssemblyName>
+    <RootNamespace>DropToWin</RootNamespace>
+    <ApplicationIcon>assets\app.ico</ApplicationIcon>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationVisualStyles>true</ApplicationVisualStyles>
+    <ApplicationDefaultFont>Segoe UI, 9pt</ApplicationDefaultFont>
+    <Version>1.0.0</Version>
+    <Product>DropToWin</Product>
+    <Description>Recibe archivos, fotos, videos y texto desde Android por Bluetooth.</Description>
+    <Copyright>DropToWin</Copyright>
+    <!-- SetColorMode (modo oscuro de WinForms) sigue marcado como experimental. -->
+    <NoWarn>$(NoWarn);WFO5001</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Servidor HTTP (Kestrel) para recibir desde iPhone por Wi-Fi. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="assets\app.ico" LogicalName="DropToWin.app.ico" />
+    <EmbeddedResource Include="web\iphone.html" LogicalName="DropToWin.web.iphone.html" />
+    <EmbeddedResource Include="web\iphone.js" LogicalName="DropToWin.web.iphone.js" />
+    <EmbeddedResource Include="web\iphone.css" LogicalName="DropToWin.web.iphone.css" />
+  </ItemGroup>
+
+</Project>

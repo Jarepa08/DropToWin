@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:id="@+id/warning_card"
+            style="@style/Card.Warning"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/warning_text"
+                style="@style/Body" />
+
+            <Button
+                android:id="@+id/warning_button"
+                style="@style/TextButton"
+                android:layout_gravity="end" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/SectionTitle"
+            android:text="@string/your_pc" />
+
+        <LinearLayout
+            style="@style/Card"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_pc" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pc_name"
+                    style="@style/Title" />
+
+                <TextView
+                    android:id="@+id/pc_status"
+                    style="@style/Secondary"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/choose_pc"
+                style="@style/TextButton"
+                android:text="@string/choose_pc" />
+
+            <Button
+                android:id="@+id/test_pc"
+                style="@style/TextButton"
+                android:text="@string/test_connection" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/SectionTitle"
+            android:layout_marginTop="20dp"
+            android:text="@string/send" />
+
+        <Button
+            android:id="@+id/send_media"
+            style="@style/PrimaryButton"
+            android:text="@string/send_media" />
+
+        <Button
+            android:id="@+id/send_files"
+            style="@style/PrimaryButton"
+            android:text="@string/send_files" />
+
+        <Button
+            android:id="@+id/send_clipboard"
+            style="@style/SecondaryButton"
+            android:text="@string/send_clipboard" />
+
+        <TextView
+            style="@style/Secondary"
+            android:layout_marginTop="24dp"
+            android:text="@string/tip_share" />
+
+        <TextView
+            style="@style/Secondary"
+            android:layout_marginTop="12dp"
+            android:text="@string/tip_wifi" />
+    </LinearLayout>
+</ScrollView>

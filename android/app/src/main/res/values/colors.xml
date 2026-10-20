@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent">#2563EB</color>
+    <color name="accent_dark">#1D4ED8</color>
+    <color name="background">#F8FAFC</color>
+    <color name="card">#EAF0F8</color>
+    <color name="card_warning">#FEF3C7</color>
+    <color name="launcher_top">#3B82F6</color>
+    <color name="launcher_bottom">#1D4ED8</color>
+</resources>

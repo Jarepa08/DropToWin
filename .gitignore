@@ -1,0 +1,12 @@
+# Compilación
+windows/bin/
+windows/obj/
+android/build/
+android/.gradle/
+android/app/build/
+android/local.properties
+tests/build/
+dist/
+
+# Clave de firma del APK: guárdala en un lugar seguro, pero no la publiques.
+android/keystore/

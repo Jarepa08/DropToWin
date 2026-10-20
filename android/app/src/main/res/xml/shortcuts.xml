@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Permite que cada PC conocido aparezca en la fila de "Compartir directo" del menú Compartir. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <share-target android:targetClass="com.droptowin.ShareActivity">
+        <data android:mimeType="*/*" />
+        <category android:name="com.droptowin.category.PC_SHARE_TARGET" />
+    </share-target>
+</shortcuts>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DropToWin</string>
+    <string name="share_label">Enviar al PC</string>
+    <string name="your_pc">Tu PC</string>
+    <string name="no_pc">Ningún PC elegido</string>
+    <string name="no_pc_hint">Toca «Elegir PC» para empezar.</string>
+    <string name="choose_pc">Elegir PC</string>
+    <string name="test_connection">Probar conexión</string>
+    <string name="send">Enviar</string>
+    <string name="send_media">Fotos y videos</string>
+    <string name="send_files">Archivos</string>
+    <string name="send_clipboard">Texto del portapapeles</string>
+    <string name="tip_share">Desde Galería, Archivos o cualquier otra app: toca Compartir y elige «Enviar al PC».</string>
+    <string name="tip_wifi">Si el teléfono y el PC están en la misma red Wi-Fi, los archivos grandes viajan por Wi-Fi automáticamente (mucho más rápido). Si no, se envían por Bluetooth.</string>
+</resources>

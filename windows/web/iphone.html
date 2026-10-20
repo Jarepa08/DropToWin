@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="DropToWin">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="apple-touch-icon" href="/icon.png">
+  <link rel="icon" href="/icon.png">
+  <link rel="stylesheet" href="/iphone.css">
+  <title>DropToWin</title>
+</head>
+<body>
+  <header class="top">
+    <img src="/icon.png" alt="" class="logo" width="44" height="44">
+    <div>
+      <h1>DropToWin</h1>
+      <p id="status" class="muted">Buscando el PC…</p>
+    </div>
+  </header>
+
+  <main>
+    <!-- Sin emparejar y sin código -->
+    <section id="view-nocode" class="card" hidden>
+      <h2>Conecta este iPhone</h2>
+      <p>En el PC abre <b>DropToWin › Dispositivos › Conectar un iPhone</b> y escanea el código con la <b>Cámara</b> del iPhone.</p>
+      <p class="muted">El iPhone y el PC tienen que estar en la misma red Wi-Fi.</p>
+    </section>
+
+    <!-- Emparejamiento -->
+    <section id="view-pair" class="card" hidden>
+      <h2>Conectar con <span class="pc-name">el PC</span></h2>
+      <label for="device-name">Nombre de este iPhone</label>
+      <input id="device-name" type="text" maxlength="60" value="iPhone" autocomplete="off">
+      <p class="muted">Es el nombre que verá el PC al recibir tus archivos (por ejemplo, «iPhone de Ana»).</p>
+      <button id="pair" class="primary">Conectar</button>
+      <p id="pair-error" class="error" hidden></p>
+    </section>
+
+    <!-- Emparejado -->
+    <section id="view-main" hidden>
+      <div class="card">
+        <h2>Enviar a <span class="pc-name">el PC</span></h2>
+        <label class="primary big file-button">
+          Elegir fotos, videos o archivos
+          <input id="files" type="file" multiple>
+        </label>
+        <ul id="queue" class="queue"></ul>
+        <p id="summary" class="muted" hidden></p>
+        <p class="muted small">Mantén esta pantalla abierta hasta que termine. Si se corta, el envío continúa solo donde se quedó.</p>
+      </div>
+
+      <div class="card">
+        <h2>Texto o enlace</h2>
+        <textarea id="text" rows="3" placeholder="Escribe o pega aquí un texto o un enlace"></textarea>
+        <button id="send-text" class="secondary">Enviar texto al PC</button>
+        <p id="text-status" class="muted small" hidden></p>
+      </div>
+
+      <details class="card guide" id="guide">
+        <summary><h2>Añadir «Enviar al PC» al menú Compartir</h2></summary>
+        <p>Con la app <b>Atajos</b> (ya viene en el iPhone) podrás enviar desde Fotos, Archivos o cualquier app con <b>Compartir › Enviar al PC</b>, sin abrir esta página. Se configura una sola vez:</p>
+        <ol class="steps">
+          <li>Abre <b>Atajos</b>, toca <b>+</b> (arriba a la derecha) y ponle de nombre <b>Enviar al PC</b> (toca el nombre de arriba › Renombrar).</li>
+          <li>Toca <b>ⓘ</b> (o el nombre › Detalles) y activa <b>Mostrar en hoja para compartir</b>. Toca OK.</li>
+          <li>En el buscador de acciones escribe <b>repetir</b> y añade <b>Repetir con cada</b> (<i>Repeat with Each</i>). Debe decir «Repetir con cada elemento de <b>Entrada del atajo</b>».</li>
+          <li>Busca <b>URL</b> y añade <b>Obtener contenido de URL</b> (<i>Get Contents of URL</i>). Arrástrala <b>dentro</b> del bloque «Repetir». Toca «URL» y pega:
+            <div class="value"><code id="v-url"></code><button class="copy" data-copy="v-url">Copiar</button></div>
+          </li>
+          <li>Toca la flecha <b>›</b> de esa acción y cambia <b>Método</b> a <b>POST</b>.</li>
+          <li>En <b>Encabezados</b> toca <b>Añadir nuevo encabezado</b>: clave <code>Authorization</code> y como valor pega:
+            <div class="value"><code id="v-key"></code><button class="copy" data-copy="v-key">Copiar</button></div>
+          </li>
+          <li>En <b>Cuerpo de la solicitud</b> elige <b>Formulario</b>, toca <b>Añadir nuevo campo › Archivo</b>, escribe la clave <code>archivo</code> y como valor elige la variable <b>Elemento de repetición</b> (<i>Repeat Item</i>).</li>
+          <li>Opcional: debajo del bloque «Repetir», añade <b>Mostrar notificación</b> con el texto «Enviado al PC».</li>
+          <li>Pruébalo: en <b>Fotos</b> elige una foto › <b>Compartir</b> › <b>Enviar al PC</b>. La primera vez, permite que Atajos acceda a la <b>red local</b>.</li>
+        </ol>
+        <p class="muted small">Si cambias de Wi-Fi o el PC cambia de dirección, vuelve a abrir esta página desde el PC y actualiza la URL del atajo. Para videos muy grandes es mejor usar el botón de esta página.</p>
+      </details>
+
+      <div class="card tips">
+        <h2>Consejo</h2>
+        <p>Para tener esta página como una app: en Safari toca <b>Compartir › Añadir a pantalla de inicio</b>.</p>
+        <button id="forget" class="link">Desconectar este iPhone</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="/iphone.js"></script>
+</body>
+</html>
