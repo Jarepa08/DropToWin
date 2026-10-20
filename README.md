@@ -78,6 +78,7 @@ Notas sobre el iPhone:
 
 - Los archivos se guardan en **`Descargas\DropToWin`** (se puede cambiar en *Ajustes*, y también organizar en subcarpetas *Imágenes, Videos, Audio, Documentos, Otros*).
 - Nunca se sobrescribe nada: un segundo `foto.jpg` se guarda como `foto (1).jpg`. Desde Android y desde Safari se conserva además la fecha original del archivo.
+- Las fotos y videos que Google Fotos (o el selector de fotos de Android) comparte con un nombre solo numérico, como `1000012345.jpg`, llegan con nombre de cámara según su fecha de captura (EXIF o metadatos del video): `IMG_20261020_154312.jpg`, `VID_20261020_154312.mp4`.
 - Al terminar aparece una notificación, una sola por tanda de archivos; al hacer clic se abre la carpeta.
 - El **texto** se copia al portapapeles. Los **enlaces** pueden abrirse solos en el navegador (opción en *Ajustes*).
 - **Recibidos**: doble clic abre el archivo; clic derecho ofrece *Mostrar en la carpeta*, *Copiar* y *Quitar de la lista*; también se pueden arrastrar a otras apps.
@@ -122,11 +123,13 @@ powershell -ExecutionPolicy Bypass -File build.ps1
 
 - `tests\run-protocol-tests.ps1 -Data <carpeta> -Work <carpeta>`: ejecuta el **mismo código Java** de la app Android contra la app de Windows. Un transporte local hace de Bluetooth, y los diálogos de aprobación se responden por UI Automation. Cubre la aprobación y el rechazo, la integridad SHA-256, los nombres conflictivos, las fechas, los cortes con reanudación (Wi-Fi y Bluetooth) y la seguridad del Wi-Fi turbo.
 - `tests\iphone-api-test.ps1 -Token <llave> -Received <carpeta>`: simula exactamente lo que envía el atajo de iOS. Cubre nombres con acentos, un video de 25 MB, varios archivos con texto, archivos sin extensión, llaves falsas o ausentes y `..\`.
+- `tests\CameraNamesTest.java`: los nombres de cámara para fotos y videos con nombre numérico (no necesita el PC ni el teléfono; el modo de uso está al principio del archivo).
 - La página del iPhone se probó en un navegador con tamaño de móvil: emparejamiento, subida por trozos con el SHA-256 verificado, texto y modo oscuro.
 
 ## Qué está verificado y qué no
 
 - **Android con un teléfono real (motorola edge 60 fusion)**: emparejamiento, aprobación en el PC y envío de una foto por Bluetooth con salto a Wi-Fi turbo. Funciona.
+- **Nombres de cámara para fotos de Google Fotos**: la parte en Java puro está probada en el PC y el código compila contra la API de Android, pero **falta probarlo en el teléfono** compartiendo desde Google Fotos.
 - **iPhone**: el lado del PC y la página están probados, y lo que envía el atajo se simuló con peticiones idénticas. **No se ha probado con un iPhone real**, porque aquí no hay ninguno. Los nombres de las acciones de Atajos pueden variar un poco según la versión de iOS.
 - Solo funciona del teléfono al PC, no al revés.
 
@@ -139,7 +142,7 @@ windows/                 App de escritorio (C# / .NET 10, WinForms)
   src/Ui/                Ventana principal, aprobación, QR para iPhone, barra de secciones
   web/                   Página para el iPhone (se incrusta en el .exe)
 android/app/src/main/    App Android (Java, sin dependencias externas)
-  java/.../core/         Protocolo, TLS con huella fijada y reanudación (Java puro, probado en el PC)
+  java/.../core/         Protocolo, TLS con huella fijada, reanudación y nombres de cámara (Java puro, probado en el PC)
 tests/                   Pruebas de extremo a extremo y utilidades
 tools/                   Icono, copia del APK al teléfono por USB
 install.ps1              Instalación por usuario (menú Inicio, inicio con Windows, desinstalador)

@@ -3,6 +3,8 @@ package com.droptowin;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.media.ExifInterface;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
@@ -10,6 +12,7 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.webkit.MimeTypeMap;
 
+import com.droptowin.core.CameraNames;
 import com.droptowin.core.DtwException;
 import com.droptowin.core.FileSource;
 
@@ -22,6 +25,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -53,12 +58,13 @@ final class AndroidSources {
 
         String name = null;
         long size = -1;
+        long taken = 0;
         long modified = 0;
         try (Cursor cursor = cr.query(uri, null, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 name = string(cursor, OpenableColumns.DISPLAY_NAME);
                 size = number(cursor, OpenableColumns.SIZE, -1);
-                long taken = number(cursor, "datetaken", 0);                                       // ms (fotos y videos)
+                taken = number(cursor, "datetaken", 0);                                            // ms (fotos y videos)
                 long docModified = number(cursor, DocumentsContract.Document.COLUMN_LAST_MODIFIED, 0); // ms
                 long mediaModified = number(cursor, MediaStore.MediaColumns.DATE_MODIFIED, 0);         // s
                 modified = taken > 0 ? taken : docModified > 0 ? docModified : mediaModified * 1000;
@@ -77,8 +83,54 @@ final class AndroidSources {
 
         if (name == null || name.trim().isEmpty()) name = fallbackName(uri);
         name = withExtension(name, mime);
+
+        // Google Fotos y el selector de fotos usan el id interno como nombre («1000012345.jpg»):
+        // se nombra como la cámara, con la fecha de captura del EXIF o de los metadatos del video.
+        String type = guessMime(name, mime);
+        boolean video = type != null && type.startsWith("video/");
+        if (CameraNames.isNumeric(name) && (video || (type != null && type.startsWith("image/")))) {
+            ZoneId zone = ZoneId.systemDefault();
+            LocalDateTime when = video ? videoDate(c, uri, zone) : exifDate(cr, uri);
+            if (when != null && taken <= 0) modified = when.atZone(zone).toInstant().toEpochMilli();
+            if (when == null) when = CameraNames.fromMillis(modified, zone);
+            if (when != null) name = CameraNames.fromDate(name, video, when);
+        }
+
         if (size < 0) return copyToCache(c, cr, uri, name, mime, modified, tempFiles);
         return new UriSource(cr, uri, name, size, mime, modified);
+    }
+
+    /** Fecha de captura del EXIF de la foto (hora local de la cámara), o null. */
+    private static LocalDateTime exifDate(ContentResolver cr, Uri uri) {
+        try (InputStream in = cr.openInputStream(uri)) {
+            if (in == null) return null;
+            ExifInterface exif = new ExifInterface(in);
+            for (String tag : new String[] {ExifInterface.TAG_DATETIME_ORIGINAL, ExifInterface.TAG_DATETIME_DIGITIZED,
+                    ExifInterface.TAG_DATETIME}) {
+                LocalDateTime date = CameraNames.parseExif(exif.getAttribute(tag));
+                if (date != null) return date;
+            }
+        } catch (IOException | RuntimeException e) {
+            // EXIF ilegible o ausente: se usa la fecha que da el proveedor.
+        }
+        return null;
+    }
+
+    /** Fecha de creación del video en la zona del teléfono, o null. */
+    private static LocalDateTime videoDate(Context c, Uri uri, ZoneId zone) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            retriever.setDataSource(c, uri);
+            return CameraNames.parseVideo(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE), zone);
+        } catch (RuntimeException e) {
+            return null; // Formato sin metadatos legibles: se usa la fecha que da el proveedor.
+        } finally {
+            try {
+                retriever.release();
+            } catch (IOException | RuntimeException ignored) {
+                // Ya se leyó lo necesario.
+            }
+        }
     }
 
     /** Proveedores que no informan del tamaño (flujos): se copia antes a la caché. */
