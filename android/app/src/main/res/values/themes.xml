@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base.* cambia con el modo oscuro (values-night); Theme.* añade ajustes por versión (values-v35). -->
+    <!-- Base.* cambia con el modo oscuro (values-night); Theme.* queda para ajustes por versión.
+         Desde Android 15 la ventana es edge-to-edge: MainActivity reserva el sitio de las barras. -->
     <style name="Base.DropToWin" parent="@android:style/Theme.Material.Light.DarkActionBar">
         <item name="android:colorPrimary">@color/accent</item>
         <item name="android:colorPrimaryDark">@color/accent_dark</item>

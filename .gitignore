@@ -4,6 +4,7 @@ windows/obj/
 android/build/
 android/.gradle/
 android/app/build/
+android/tools/bundletool.jar
 android/local.properties
 tests/build/
 dist/

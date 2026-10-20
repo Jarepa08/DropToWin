@@ -10,6 +10,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Insets;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -47,6 +49,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
+        fitSystemBars(findViewById(R.id.root));
         warningCard = findViewById(R.id.warning_card);
         warningText = findViewById(R.id.warning_text);
         warningButton = findViewById(R.id.warning_button);
@@ -99,6 +102,20 @@ public class MainActivity extends Activity {
             pcName.setText(pc.label());
             pcStatus.setText(lastStatus != null ? lastStatus : "Último uso: " + Fmt.ago(pc.lastUsed));
         }
+    }
+
+    /**
+     * Desde Android 15 la ventana es edge-to-edge: el contenido empieza en lo alto de la pantalla, bajo
+     * la barra de título, y llega hasta la barra de navegación. El sistema incluye la barra de título en
+     * los márgenes que entrega, así que basta con usarlos como relleno.
+     */
+    private static void fitSystemBars(View root) {
+        if (Build.VERSION.SDK_INT < 35) return; // Antes, el sistema ya colocaba el contenido entre las barras.
+        root.setOnApplyWindowInsetsListener((v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            return WindowInsets.CONSUMED;
+        });
     }
 
     private void showWarning(String text, String action, Runnable onClick) {

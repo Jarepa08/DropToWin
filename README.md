@@ -108,7 +108,7 @@ Los protocolos están documentados en [PROTOCOLO.md](PROTOCOLO.md).
 
 ## Compilar
 
-Requisitos: .NET 10 SDK, JDK 17 o posterior, y el Android SDK con *build-tools 36.0.0* y *platform android-35* (en `%LOCALAPPDATA%\Android\Sdk` o donde indique `ANDROID_HOME`).
+Requisitos: .NET 10 SDK, JDK 17 o posterior, y el Android SDK con *build-tools 36.0.0* y *platform android-36* (en `%LOCALAPPDATA%\Android\Sdk` o donde indique `ANDROID_HOME`).
 
 ```bash
 powershell -ExecutionPolicy Bypass -File build.ps1
@@ -116,6 +116,7 @@ powershell -ExecutionPolicy Bypass -File build.ps1
 
 - Deja `DropToWin.exe` y `DropToWin.apk` en `dist\`. Con `-SelfContained`, el `.exe` incluye .NET y funciona en cualquier Windows 10/11 x64 (ocupa más). Con `-SkipAndroid` o `-SkipWindows` compila solo una de las dos partes.
 - Después, `install.ps1` instala o actualiza la app en el PC.
+- Con `-Bundle` deja además `dist\DropToWin.aab`, el formato que exige Google Play, firmado con la misma clave. Necesita `bundletool-all-<versión>.jar`, de [github.com/google/bundletool/releases](https://github.com/google/bundletool/releases), guardado como `android\tools\bundletool.jar`. Lo que falta para publicar está en [GOOGLE-PLAY.md](GOOGLE-PLAY.md).
 - `android\build-apk.ps1` compila el APK **sin Gradle**: aapt2, javac, d8, zipalign y apksigner. La clave de firma está en `android\keystore\`. **Guárdala**: Android solo instala actualizaciones firmadas con la misma clave.
 - Para abrir el proyecto Android en Android Studio, abre la carpeta `android\`. Los archivos Gradle están incluidos, pero solo se verificó la compilación con `build-apk.ps1`.
 
@@ -130,6 +131,7 @@ powershell -ExecutionPolicy Bypass -File build.ps1
 
 - **Android con un teléfono real (motorola edge 60 fusion)**: emparejamiento, aprobación en el PC y envío de una foto por Bluetooth con salto a Wi-Fi turbo. Funciona.
 - **Nombres de cámara para fotos de Google Fotos**: la parte en Java puro está probada en el PC y el código compila contra la API de Android, pero **falta probarlo en el teléfono** compartiendo desde Google Fotos.
+- **Android 16 y Google Play**: el objetivo API 36, la pantalla principal en modo edge-to-edge y la generación del `.aab` (`-Bundle`) compilan contra la API de Android 16 y se revisaron contra el código del sistema, pero **falta compilarlos con el Android SDK real y probarlos en el teléfono**. Los archivos Gradle se actualizaron a AGP 8.13 y Gradle 8.13 sin probarlos.
 - **iPhone**: el lado del PC y la página están probados, y lo que envía el atajo se simuló con peticiones idénticas. **No se ha probado con un iPhone real**, porque aquí no hay ninguno. Los nombres de las acciones de Atajos pueden variar un poco según la versión de iOS.
 - Solo funciona del teléfono al PC, no al revés.
 

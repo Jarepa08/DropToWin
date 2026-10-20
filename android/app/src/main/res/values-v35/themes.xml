@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Android 15 fuerza el modo "edge-to-edge"; esta app usa la barra de acción clásica. -->
-    <style name="Theme.DropToWin" parent="Base.DropToWin">
-        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
-    </style>
-</resources>
